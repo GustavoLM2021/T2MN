@@ -114,7 +114,7 @@ int main(int argc, char **argv) {
     while ((read = getline(&line, &len, fp)) != -1) {
             char *p = line;
             for (int j = 0; j < read; ++j) {
-                if (isdigit(line[j]) && line[j - 1] != '_') {
+                if (isdigit(line[j]) && line[j - 1] == ' ' ) {
                    float  fc=atof(&line[j]);
                    //printf ("%f\n",fc);
                    arrVal[c]=fc;
@@ -142,11 +142,8 @@ int main(int argc, char **argv) {
         c++;
     }
     //printf("TOP:%i\n",top);
-    for (int i = 0; i < (count); i+=2) {
-        //printf("S%i S%i\n",arrSemI[i],arrSemF[i]);
-    }
     for (int i = 0; i < (count); i++) {
-        //printf("V%f\n",arrVal[i]);
+        //printf("S%i V%f S%i\n",arrSemI[i],arrVal[i],arrSemF[i]);
     }
     courseLen = count/2;
     init(top,arrVal,arrSemI,arrSemF);
@@ -166,11 +163,11 @@ int main(int argc, char **argv) {
         //printf("%f\n",actual);
         diff=actual-prev;
         //printf("ACT:%f PREV:%f\n",actual,prev);
-        //printf("I:%i %f\n",x,diff);
+        //printf("X:%i DIFF:%f\n",x,diff);
         prev=actual;
         if(diff<0.01 && diff!=0){
             //printf("%f\n",diff);
-            //printf("%i",x);
+            //printf("%i",x%courseLen);
             break;
         }
 
