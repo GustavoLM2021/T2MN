@@ -7,11 +7,11 @@
 
 
 typedef struct {
-    int N;
-    int R;
-    int S;
-    int F;
-    int D;
+    float N;
+    float R;
+    float S;
+    float F;
+    float D;
     float cs;
     float cf;
 }nivel;
@@ -30,7 +30,7 @@ void init(int N,float arrV[],int arrSI[],int arrSF[]){
     niveis[0].S=N;
     niveis[1].N=N;
     for (int i = 0; i < courseLen*2; i++) {
-        printf("%i %i %i %f\n",i,arrSI[i],arrSF[i],arrV[i]);
+        //printf("%i %i %i %f\n",i,arrSI[i],arrSF[i],arrV[i]);
         if(arrSI[i]==arrSF[i]){
             niveis[arrSI[i]].cf=arrV[i];
             //printf("%i %i %f\n",i,arrSI[i],niveis[arrSI[i]].cf);
@@ -48,20 +48,21 @@ void init(int N,float arrV[],int arrSI[],int arrSF[]){
 void matricula(){
 
 for (int i =1; i<=courseLen; i++ ){
-    printf("IND:%i N:%i R:%i S:%i F:%i D:%i CS:%f CF:%f\n",i,niveis[i].N,niveis[i].R,niveis[i].S,niveis[i].F,niveis[i].D,niveis[i].cs,niveis[i].cf);
+    printf("IND:%i N:%f R:%f S:%f F:%f D:%f CS:%f CF:%f\n",i,niveis[i].N,niveis[i].R,niveis[i].S,niveis[i].F,niveis[i].D,niveis[i].cs,niveis[i].cf);
     niveis[i].N=niveis[i-1].S;
     niveis[i].R=niveis[i].F;
     hell+=niveis[i].D;
 }
 niveis[courseLen+1].N=niveis[courseLen].S;
 }
-void estudo(){
+float estudo(){
     for (int i =1; i<=courseLen; i++ ){
-        float batch=(float)niveis[i].N+(float)niveis[i].R;
-        niveis[i].S=(int)(niveis[i].cs*batch);
-        niveis[i].F=(int)(niveis[i].cf*batch);
+        float batch=niveis[i].N+niveis[i].R;
+        niveis[i].S=(niveis[i].cs*batch);
+        niveis[i].F=(niveis[i].cf*batch);
         niveis[i].D=niveis[i].N+niveis[i].R-niveis[i].S+niveis[i].F;
     }
+    return niveis[courseLen].S;
 }
 
 
@@ -153,19 +154,34 @@ int main(int argc, char **argv) {
     fclose(fp);
     if (line)
         free(line);
-
-    while (niveis[courseLen].S==0){
-
+    float prev=0;
+    float actual=0;
+    float diff=0;
+    int x=0;
+    float est=0;
+    while (true){
+        x++;
         matricula();
-        estudo();
+        actual=estudo();
+        //printf("%f\n",actual);
+        diff=actual-prev;
+        //printf("ACT:%f PREV:%f\n",actual,prev);
+        //printf("I:%i %f\n",x,diff);
+        prev=actual;
+        if(diff<0.01 && diff!=0){
+            //printf("%f\n",diff);
+            //printf("%i",x);
+            break;
+        }
 
     }
-    printf("Diplomados:%i\n",niveis[courseLen].S);
-    int sum=0;
-    for (int i = 0; i < courseLen ; ++i) {
-        sum=+niveis[i].N+niveis[i].R;
+    for (int i = 0; i < courseLen; ++i) {
+        est+=niveis[i].N+niveis[i].R;
     }
-    printf("Total na universidade: %i\n",sum);
+    printf("Diplomados:%f\n",niveis[courseLen+1].N);
+    printf("Total na universidade: %f\n",est);
+//    printf("Diplomados:%i\n",(int)niveis[courseLen].S);
+//    printf("Total na universidade: %i\n",(int)est);
 
 
     exit(EXIT_SUCCESS);
