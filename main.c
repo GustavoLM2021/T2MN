@@ -48,7 +48,7 @@ void init(int N,float arrV[],int arrSI[],int arrSF[]){
 void matricula(){
 
 for (int i =1; i<=courseLen; i++ ){
-    printf("IND:%i N:%f R:%f S:%f F:%f D:%f CS:%f CF:%f\n",i,niveis[i].N,niveis[i].R,niveis[i].S,niveis[i].F,niveis[i].D,niveis[i].cs,niveis[i].cf);
+    //printf("IND:%i N:%f R:%f S:%f F:%f D:%f CS:%f CF:%f\n",i,niveis[i].N,niveis[i].R,niveis[i].S,niveis[i].F,niveis[i].D,niveis[i].cs,niveis[i].cf);
     niveis[i].N=niveis[i-1].S;
     niveis[i].R=niveis[i].F;
     hell+=niveis[i].D;
@@ -154,10 +154,9 @@ int main(int argc, char **argv) {
     float prev=0;
     float actual=0;
     float diff=0;
-    int x=0;
+    int x=10000;
     float est=0;
     while (true){
-        x++;
         matricula();
         actual=estudo();
         //printf("%f\n",actual);
@@ -165,18 +164,22 @@ int main(int argc, char **argv) {
         //printf("ACT:%f PREV:%f\n",actual,prev);
         //printf("X:%i DIFF:%f\n",x,diff);
         prev=actual;
+        x--;
         if(diff<0.01 && diff!=0){
             //printf("%f\n",diff);
             //printf("%i",x%courseLen);
             break;
         }
+//        if(x==0){
+//            break;
+//        }
 
     }
-    for (int i = 0; i < courseLen; ++i) {
+    for (int i = 1; i <= courseLen; ++i) {
         est+=niveis[i].N+niveis[i].R;
     }
-    printf("Diplomados:%f\n",niveis[courseLen+1].N);
-    printf("Total na universidade: %f\n",est);
+    printf("Diplomados:%i\n",(int)niveis[courseLen+1].N);
+    printf("Total na universidade: %i\n",(int)est);
 //    printf("Diplomados:%i\n",(int)niveis[courseLen].S);
 //    printf("Total na universidade: %i\n",(int)est);
 
