@@ -1,0 +1,3 @@
+Resultados de caso6.txt
+Numero de Diplomados : 45
+Numero ainda na Universidade : 12523

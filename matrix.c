@@ -12,7 +12,7 @@ typedef struct {
 } nivel;
 nivel niveis[16];
 
-void makematrix(float n, int arrSI[], int arrSF[], float arrV[]) {
+void makematrix(float n, int arrSI[], int arrSF[], float arrV[],char * filename) {
     //cria a matriz
     float matrix[courseLen + 1][courseLen + 1];
     //preenche os coeficientes da estrutura
@@ -78,12 +78,31 @@ void makematrix(float n, int arrSI[], int arrSF[], float arrV[]) {
     }
 
     float csf = x[courseLen] * niveis[courseLen].cs;
-    printf("Numero de Diplomados :%i\n", (int) csf);
+    printf("Numero de Diplomados : %i\n", (int) csf);
     float sum = 0;
     for (int i = 1; i <= courseLen; ++i) {
         sum += x[i];
     }
-    printf("Numero ainda na Universidade:%i\n", (int) sum);
+    int resD=(int) csf;
+    printf("Numero ainda na Universidade: %i\n", (int) sum);
+    int resU=(int)sum;
+
+    // prepara linhas para arquivo de saida
+    char tmpD[80];
+    char tmpU[80];
+    sprintf(tmpD,"Numero de Diplomados : %i",resD);
+    sprintf(tmpU,"Numero ainda na Universidade : %i",resU);
+    // salva os resultados em arquivo
+    FILE *fptr;
+    char fileori[80];
+    strcpy(fileori,filename);
+    strcat(filename,"res.txt");
+    fptr = fopen(filename, "w");
+    fprintf(fptr,"Resultados de %s.txt\n",fileori);
+    fprintf(fptr,"%s\n",tmpD);
+    fprintf(fptr,"%s\n",tmpU);
+    fclose(fptr);
+
 }
 
 int main(int argc, char **argv) {
@@ -170,7 +189,11 @@ int main(int argc, char **argv) {
     }
     //tamanho do curso
     courseLen = count / 2;
-    makematrix(top, arrSemI, arrSemF, arrVal);
+    char delim[]=".";
+    char * ptr= strtok(argv[1],delim);
+    char * name=ptr;
+    makematrix(top, arrSemI, arrSemF, arrVal,name);
+
 
 
 }
